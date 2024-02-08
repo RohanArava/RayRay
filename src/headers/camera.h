@@ -5,6 +5,7 @@
 
 #include "color.h"
 #include "hittable.h"
+#include "material.h"
 #include <iostream>
 #include <fstream>
 class camera {
@@ -68,8 +69,11 @@ class camera {
             }
             auto t = interval(0.001, infinity);
             if(world.hit(r, t, rec)){
-                vec3 direction = rec.normal + random_on_hemisphere(rec.normal);
-                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
+                ray scattered;
+                color attenuation;
+                if (rec.mat->scatter(r, rec, attenuation, scattered))
+                    return attenuation * ray_color(scattered, depth-1, world);
+                return color(0,0,0);
             }
 
             vec3 unit_direction = unit_vector(r.direction());
