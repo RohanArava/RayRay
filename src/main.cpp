@@ -3,9 +3,13 @@
 #include <fstream>
 
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::ofstream img("img.ppm", std::ofstream::out | std::ofstream::trunc);
+    if (argc < 2) {
+        std::cout << "Provide filename" << std::endl;
+        return 0;
+    }
+    std::ofstream img(argv[1], std::ofstream::out | std::ofstream::trunc);
     print_ppm(img);
     return 0;
 }
