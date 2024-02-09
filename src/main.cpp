@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     if (argc < 2) {
-        std::cout << "Provide filename" << std::endl;
+        print_ppm(std::cout);
         return 0;
     }
     std::ofstream img(argv[1], std::ofstream::out | std::ofstream::trunc);
