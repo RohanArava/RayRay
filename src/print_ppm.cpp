@@ -18,8 +18,7 @@ void print_ppm(std::ostream &out){
     world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
-    world.add(std::make_shared<triangle>(point3(0.7, 0 ,-1.5), point3(0.7, 1 ,-1.5), point3(0.7, 0 ,1.5), material_triangle));
-    world.add(std::make_shared<triangle>(point3(0.7, 1 ,1.5), point3(0.7, 1 ,-1.5), point3(0.7, 0 ,1.5), material_triangle));
+    world.add(std::make_shared<quadrilateral>(point3(0.7, 1 ,-1.5), point3(0.7, 0 ,-1.5), point3(0.7, 0 ,1.5), point3(0.7, 1, 1.5), material_triangle));
     camera cam;
 
     cam.aspect_ratio = 16.0 / 9.0;

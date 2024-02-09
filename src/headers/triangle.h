@@ -41,4 +41,22 @@ class triangle : public hittable {
         std::shared_ptr<material> mat;
 };
 
+class quadrilateral :public hittable{
+    public:
+        quadrilateral(point3 _p1, point3 _p2, point3 _p3, point3 _p4, std::shared_ptr<material> _material) : t1(_p1, _p2, _p3, _material), t2(_p4, _p1, _p3, _material), mat(_material){}
+
+        bool hit(const ray& r, interval t, hit_record& rec) const override {
+            bool hit_t1 = t1.hit(r, t, rec);
+            if(hit_t1){
+                bool hit_t2 = t2.hit(r, interval(t.min, rec.t), rec);
+                return true;
+            }else{
+                return t2.hit(r, t, rec);
+            }
+        }        
+    private:
+        triangle t1, t2;
+        std::shared_ptr<material> mat;
+};
+
 #endif
