@@ -31,5 +31,7 @@ void print_ppm(std::ostream &out){
     cam.lookat   = point3(0,0,-1);
     cam.vup      = vec3(0,1,0);
 
+    cam.defocus_angle = 10.0;
+    cam.focus_dist = 3;
     cam.render(world, out); 
 }
