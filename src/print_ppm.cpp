@@ -15,7 +15,7 @@ void print_ppm(std::ostream &out){
     auto material_triangle = std::make_shared<metal>(color(0.9, 0, 0.7), 0.2);
 
     world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-    world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
+    world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0), point3( 0.4,    0.4, -1.4),   0.5, material_center));
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
     world.add(std::make_shared<quadrilateral>(point3(0.7, 1 ,-1.5), point3(0.7, 0 ,-1.5), point3(0.7, 0 ,1.5), point3(0.7, 1, 1.5), material_triangle));
