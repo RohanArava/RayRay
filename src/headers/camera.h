@@ -43,6 +43,24 @@ class camera {
 
             std::clog << "\rDone.                 \n";
         }
+        void view(const hittable& world, std::ostream& out) {
+            initialize();
+            defocus_angle = 0;
+            out << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+            for (int j = 0; j < image_height; ++j) {
+                std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+                for (int i = 0; i < image_width; ++i) {
+                    color pixel_color(0,0,0);
+                    for (int sample = 0; sample < samples_per_pixel; ++sample){
+                        ray r = get_ray(i, j);
+                        pixel_color += view_color(r, world);
+                    }
+                    write_color(out, pixel_color, samples_per_pixel);
+                }
+            }
+
+            std::clog << "\rDone.                 \n";
+        }
     private:
         int    image_height;
         point3 center;
@@ -98,6 +116,21 @@ class camera {
             }
 
             vec3 unit_direction = unit_vector(r.direction());
+            auto a = 0.5*(unit_direction.y() + 1.0);
+            return (1-a)*color(1.0,1.0,1.0) + a*color(0.5,0.7,1.0);
+        }
+
+        color view_color(const ray& r, const hittable& world) const {
+            hit_record rec;
+            auto t = interval(0.001, infinity);
+            vec3 unit_direction = unit_vector(r.direction());
+            if(world.hit(r, t, rec)){
+                auto cos_c = dot(unit_direction, unit_vector(rec.normal));
+                auto sin_c = sqrt(1 - (cos_c * cos_c));
+                auto grey_intensity = 0.3 * ( sin_c + 1);
+                return color(grey_intensity, grey_intensity, grey_intensity);
+            }
+
             auto a = 0.5*(unit_direction.y() + 1.0);
             return (1-a)*color(1.0,1.0,1.0) + a*color(0.5,0.7,1.0);
         }
