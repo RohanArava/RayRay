@@ -6,7 +6,9 @@
 
 class triangle : public hittable {
     public:
-    triangle(point3 _p1, point3 _p2, point3 _p3, std::shared_ptr<material> _material) : p1(_p1), p2(_p2), p3(_p3), mat(_material) {}
+    triangle(point3 _p1, point3 _p2, point3 _p3, std::shared_ptr<material> _material) : p1(_p1), p2(_p2), p3(_p3), mat(_material) {
+        bbox = aabb(aabb(p1, p2), aabb(p2, p3));
+    }
 
     bool hit(const ray& r, interval t, hit_record& rec) const override {
         vec3 normal = unit_vector(cross(p2-p1, p3-p1));
@@ -34,16 +36,23 @@ class triangle : public hittable {
         }else{
             return false;
         }
-    }    
+    }  
 
+    aabb bounding_box() const override { return  bbox;}
+    void set_mat(std::shared_ptr<material> _mat) {
+        mat = _mat;
+    }
     private:
         point3 p1, p2, p3;
+        aabb bbox;
         std::shared_ptr<material> mat;
 };
 
 class quadrilateral :public hittable{
     public:
-        quadrilateral(point3 _p1, point3 _p2, point3 _p3, point3 _p4, std::shared_ptr<material> _material) : t1(_p1, _p2, _p3, _material), t2(_p4, _p1, _p3, _material), mat(_material){}
+        quadrilateral(point3 _p1, point3 _p2, point3 _p3, point3 _p4, std::shared_ptr<material> _material) : t1(_p1, _p2, _p3, _material), t2(_p4, _p1, _p3, _material), mat(_material){
+            bbox = aabb(t1.bounding_box(), t2.bounding_box());
+        }
 
         bool hit(const ray& r, interval t, hit_record& rec) const override {
             bool hit_t1 = t1.hit(r, t, rec);
@@ -56,6 +65,7 @@ class quadrilateral :public hittable{
         }        
     private:
         triangle t1, t2;
+        aabb bbox;
         std::shared_ptr<material> mat;
 };
 

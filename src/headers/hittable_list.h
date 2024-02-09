@@ -17,6 +17,7 @@ class hittable_list : public hittable {
 
         void add(std::shared_ptr<hittable> object) {
             objects.push_back(object);
+            bbox = aabb(bbox, object->bounding_box());
         }
 
         bool hit(const ray& r, interval t, hit_record& rec) const override {
@@ -34,6 +35,9 @@ class hittable_list : public hittable {
     
             return hit_anything;
         }
+        aabb bounding_box() const override { return bbox; }
+    private:
+        aabb bbox;
 };
 
 #endif

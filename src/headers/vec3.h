@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "myutils.h"
 
 class vec3 {
     public:

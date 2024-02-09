@@ -5,11 +5,10 @@
 #include <cstdlib>
 #include <limits>
 #include <memory>
-
 const double infinity = std::numeric_limits<double>::infinity();
 const double pi = 3.1415926535897932385;
 
-void print_ppm(std::ostream &out);
+void print_ppm(std::ostream &out, char* m_type, char* m_name, bool isModel);
 
 inline double degrees_to_radians(double degrees) {
     return degrees * pi / 180.0;
@@ -21,6 +20,10 @@ inline double random_double() {
 
 inline double random_double(double min, double max) {
     return min + (max-min)*random_double();
+}
+
+inline int random_int(int min, int max) {
+    return static_cast<int>(random_double(min, max+1));
 }
 
 #include "ray.h"
