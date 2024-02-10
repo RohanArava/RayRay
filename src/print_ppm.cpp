@@ -49,8 +49,8 @@ void render_gltf_model(std::ostream &out, char *m_type, char *m_name)
 
     cam.aspect_ratio = 16.0 / 9.0;
     cam.image_width = 400;
-    cam.samples_per_pixel = 50;
-    cam.max_depth = 50;
+    cam.samples_per_pixel = 25;
+    cam.max_depth = 10;
 
     cam.vfov = 100;
     cam.lookfrom = point3(2, -5, 0);

@@ -44,7 +44,6 @@ std::vector<triangle> parse_model(tinygltf::Model &model)
                 auto positions = byte_to_double(model, model.accessors[position_i]);
                 auto indices_i = primitive.indices;
                 auto indices = byte_to_double(model, model.accessors[indices_i]);
-                std::cout << std::endl;
                 std::vector<point3> points;
                 for (int i = 0; i < positions.size(); i += 3)
                 {

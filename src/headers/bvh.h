@@ -15,8 +15,8 @@ class bvh_node : public hittable {
     bvh_node(const hittable_list& list) : bvh_node(list.objects, 0, list.objects.size()) {}
 
     bvh_node(const std::vector<std::shared_ptr<hittable>>& src_objects, size_t start, size_t end) {
+        std::cout << "\r" << end << "                 ";
         auto objects = src_objects;
-
         int axis = random_int(0,2);
         auto comparator = (axis == 0) ? box_x_compare
                         : (axis == 1) ? box_y_compare
