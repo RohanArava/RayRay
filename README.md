@@ -3,6 +3,7 @@
 ###### Functionalities:
   - spheres, Triangles, Quads
   - lamberitian reflections, No shadow acne, Gamma corrected images
+  - defocus blur and motion blur
   - metal, dielectric and diffuse materials
   - image textures
   - custom camera positions
