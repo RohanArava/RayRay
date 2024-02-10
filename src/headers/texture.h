@@ -3,6 +3,7 @@
 
 #include "myutils.h"
 #include "color.h"
+#include "image_utils.h"
 
 class texture {
   public:
@@ -37,11 +38,21 @@ class checker_texture : public texture {
     {}
 
     color value(double u, double v, const point3& p) const override {
-        auto xInteger = static_cast<int>(std::floor(inv_scale * p.x()));
-        auto yInteger = static_cast<int>(std::floor(inv_scale * p.y()));
-        auto zInteger = static_cast<int>(std::floor(inv_scale * p.z()));
 
-        bool isEven = (xInteger + yInteger + zInteger) % 2 == 0;
+        bool isEven;
+        if(int(u)%2==0){
+          if(int(v)%2==0){
+            isEven = true;
+          }else{
+            isEven = false;
+          }
+        }else{
+          if(int(v)%2==0){
+            isEven = false;
+          }else{
+            isEven = true;
+          }
+        }
 
         return isEven ? even->value(u, v, p) : odd->value(u, v, p);
     }
@@ -50,6 +61,29 @@ class checker_texture : public texture {
     double inv_scale;
     std::shared_ptr<texture> even;
     std::shared_ptr<texture> odd;
+};
+
+class image_texture : public texture {
+  public:
+    image_texture(const char* filename) : image(filename) {}
+
+    color value(double u, double v, const point3& p) const override {
+
+        if (image.height() <= 0) return color(0,1,1);
+
+        u = interval(0,1).clamp(u);
+        v = 1.0 - interval(0,1).clamp(v); 
+
+        auto i = static_cast<int>(u * image.width());
+        auto j = static_cast<int>(v * image.height());
+        auto pixel = image.pixel_data(i,j);
+
+        auto color_scale = 1.0 / 255.0;
+        return color(color_scale*pixel[0], color_scale*pixel[1], color_scale*pixel[2]);
+    }
+
+  private:
+    image image;
 };
 
 #endif
