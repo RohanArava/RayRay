@@ -85,22 +85,27 @@ void print_ppm(std::ostream &out, char* m_type, char* m_name, bool isModel)
     else
     {
         tinygltf::Model model = load_gltf_model(m_type, m_name);
+        auto tris = parse_model(model);
         hittable_list world;
         auto checker = std::make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
-        auto tri = primitive_to_triangle(model, model.meshes[model.nodes[model.scenes[model.defaultScene].nodes[0]].mesh].primitives[0]);
-        tri.set_mat(std::make_shared<lambertian>(checker));
-        world.add(std::make_shared<triangle>(tri));
+        // auto tri = primitive_to_triangle(model, model.meshes[model.nodes[3].mesh].primitives[0]);
+        // tri.set_mat(std::make_shared<lambertian>(checker));
+        for( int i=0; i<tris.size(); i++){
+            world.add(std::make_shared<triangle>(tris[i]));
+        }
+        world = hittable_list(std::make_shared<bvh_node>(world));
+
         camera cam;
 
         cam.aspect_ratio = 16.0 / 9.0;
         cam.image_width = 400;
         cam.samples_per_pixel = 50;
-        cam.max_depth = 20;
+        cam.max_depth = 50;
 
-        cam.vfov = 20;
-        cam.lookfrom = point3(2,3,5);
-        cam.lookat = point3(0, 0, 0);
-        cam.vup = vec3(0, 1, 0);
+        cam.vfov = 100;
+        cam.lookfrom = point3(2, -5, 0);
+        cam.lookat = point3(2, 0, 0);
+        cam.vup = vec3(0, 0, 1);
 
         cam.defocus_angle = 0;
         cam.focus_dist = 10.0;

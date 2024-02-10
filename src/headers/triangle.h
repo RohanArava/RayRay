@@ -3,6 +3,7 @@
 
 #include "myutils.h"
 #include "hittable.h"
+#include <string.h> 
 
 class triangle : public hittable {
     public:
@@ -41,6 +42,11 @@ class triangle : public hittable {
     aabb bounding_box() const override { return  bbox;}
     void set_mat(std::shared_ptr<material> _mat) {
         mat = _mat;
+    }
+    std::string tri_to_string(){
+        return std::to_string(p1.x()) + " " + std::to_string(p1.y()) + " " + std::to_string(p1.z()) + "\t"
+            +  std::to_string(p2.x()) + " " + std::to_string(p2.y()) + " " + std::to_string(p2.z()) + "\t"
+            +  std::to_string(p3.x()) + " " + std::to_string(p3.y()) + " " + std::to_string(p3.z());
     }
     private:
         point3 p1, p2, p3;
